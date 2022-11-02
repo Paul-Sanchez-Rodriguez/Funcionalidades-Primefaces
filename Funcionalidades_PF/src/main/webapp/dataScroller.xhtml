@@ -1,0 +1,139 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+        <f:event listener="#{ProductosC.listar()}" type="preRenderView"/>
+        <!--<style type="text/css">
+                    .product-list-action{
+                        float: right;
+                        position: relative; 
+                        bottom:  70px;
+        
+                    }
+                </style>-->
+
+        <style>
+            .product .product-list-item img {
+                width: 150px;
+                box-shadow: 0 3px 6px rgb(0 0 0 / 16%), 0 3px 6px rgb(0 0 0 / 23%);
+                margin-right: 2rem;
+            }
+
+            .product .product-name {
+                font-size: 1rem;
+                font-weight: 700;
+            }
+
+            .product .product-description {
+                margin: 0 0 1rem 0;
+            }
+
+            .product .product-category {
+                font-weight: 600;
+                vertical-align: middle;
+            }
+
+            .product .product-list-item .product-list-detail {
+                flex: 1 1 0;
+                -ms-flex: 1 1 0;
+            }
+
+            .product .product-list-item .product-price {
+                font-size: 1.5rem;
+                font-weight: 600;
+                margin-bottom: 0.5rem;
+                align-self: flex-end;
+            }
+
+            body .ui-button.ui-button-text-icon-left .ui-button-text {
+                padding: 0.5rem 1rem 0.5rem 2rem;
+            }
+            .ui-button-text-icon-left .ui-button-text {
+                padding: 0.3em 1em 0.3em 2.1em;
+            }
+
+            .ui-button .ui-button-text {
+                display: block;
+                line-height: normal;
+            }
+
+            .product .product-list-item {
+                display: -ms-flexbox;
+                display: flex;
+                -ms-flex-align: center;
+                align-items: center;
+                padding: 1rem;
+            }
+            .p-5 {
+                padding: 2rem !important;
+            }
+
+            .product .product-list-item .product-list-action {
+                display: -ms-flexbox;
+                display: flex;
+                -ms-flex-direction: column;
+                flex-direction: column;
+            }
+        </style>
+
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:tabMenu activeIndex="#{param.i}">
+                <p:menuitem value="DataScroller" outcome="dataScroller" icon="pi pi-fw pi-home">
+                    <f:param name="i" value="0"/>
+                </p:menuitem>
+                <p:menuitem value="DataTable" outcome="datatable" icon="pi pi-fw pi-calendar">
+                    <f:param name="i" value="1"/>
+                </p:menuitem>
+                <p:menuitem value="OrderList" outcome="orderList" icon="pi pi-fw pi-pencil">
+                    <f:param name="i" value="2"/>
+                </p:menuitem>
+                <p:menuitem value="ProgressBar" outcome="progressBar" icon="pi pi-fw pi-file">
+                    <f:param name="i" value="3"/>
+                </p:menuitem>
+
+            </p:tabMenu>
+        </h:form>
+        <p:growl id="growl" severity="info, error" showDetail="true"/>
+        <div class="card">
+            <h:form>
+                <p:dataScroller value="#{ProductosC.listadoProd}" var="product" chunkSize="5">
+                    <f:facet name="header">
+                        Productos
+                    </f:facet>
+
+                    <div class="product">
+                        <div class="product-list-item p-5">
+                            <img src="../Image/#{product.imagen}.png" height=" 80 px" />
+                            <div class="product-list-detail">
+                                <div class="product-name">#{product.nombre}</div>
+                                <div class="product-description">#{product.descripcion}</div>
+
+                                <i class="pi pi-tag product-category-icon"/><span
+                                    class="product-category">#{product.marca}</span>
+                            </div>
+                            <div class="product-list-action">
+                                <h:outputText value="#{product.precio_venta}" styleClass="product-price">
+                                    <f:convertNumber currencySymbol="$" type="currency"/>
+                                </h:outputText>
+                                <p:commandButton value="Add To Cart" icon="pi pi-shopping-cart"
+                                                 disabled="#{product.stock == 0}" action="#{ProductosC.añadir()}" update="growl">
+                                </p:commandButton>
+
+                            </div>
+                        </div>
+                    </div>
+                </p:dataScroller>
+            </h:form>
+        </div>
+    </h:body>
+</html>
